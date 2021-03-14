@@ -62,7 +62,8 @@ async function convert_audio(input) {
 const SETTINGS_FILE = 'settings.json';
 
 let DISCORD_TOK = null;
-let WITAPIKEY = null; 
+let WITAPIKEY = null;
+let GCS_TOKEN_BASE64 = null; 
 let SPOTIFY_TOKEN_ID = null;
 let SPOTIFY_TOKEN_SECRET = null;
 
@@ -74,6 +75,14 @@ function loadConfig() {
     } else {
         DISCORD_TOK = process.env.DISCORD_TOK;
         WITAPIKEY = process.env.WITAPIKEY;
+        GCS_TOKEN_BASE64 = process.env.GCS_TOKEN_BASE64;
+        let buff = new Buffer(data, 'base64');
+        let text = buff.toString('ascii');
+        fs = require('fs');
+        fs.writeFile('gspeech_key.json', text, function (err) {
+          if (err) return console.log(err);
+          console.log('gspeech_key.json file successfully written');
+        });
     }
     if (!DISCORD_TOK || !WITAPIKEY)
         throw 'failed loading config #113 missing keys!'
@@ -326,8 +335,8 @@ function process_commands_query(txt, mapKey, user) {
 //////////////////////////////////////////
 async function transcribe(buffer) {
 
-  return transcribe_witai(buffer)
-  // return transcribe_gspeech(buffer)
+  //  return transcribe_witai(buffer)
+    return transcribe_gspeech(buffer)
 }
 
 // WitAI
