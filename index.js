@@ -76,7 +76,7 @@ function loadConfig() {
         DISCORD_TOK = process.env.DISCORD_TOK;
         WITAPIKEY = process.env.WITAPIKEY;
         GCS_TOKEN_BASE64 = process.env.GCS_TOKEN_BASE64;
-        let buff = new Buffer(data, 'base64');
+        let buff = new Buffer(GCS_TOKEN_BASE64, 'base64');
         let text = buff.toString('ascii');
         fs = require('fs');
         fs.writeFile('gspeech_key.json', text, function (err) {
